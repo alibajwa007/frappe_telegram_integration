@@ -1,1 +1,1 @@
-Frappe Telegram Integration
+Frappe Telegram

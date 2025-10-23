@@ -1,25 +1,41 @@
+from . import __version__ as app_version  # noqa
+
 app_name = "frappe_telegram_integration"
-app_title = "Frappe Telegram Integration"
-app_publisher = "alibajwa007"
-app_description = "Frappe Telegram Integration"
-app_email = "babargoraya878@gmail.com"
-app_license = "mit"
+app_title = "Frappe Telegram"
+app_publisher = "Leam Technology Systems"
+app_description = "Telegram Bot Manager for Frappe"
+app_icon = "octicon octicon-file-directory"
+app_color = "blue"
+app_email = "info@leam.ae"
+app_license = "MIT"
 
-# Apps
-# ------------------
 
-# required_apps = []
+after_install = "frappe_telegram_integration.setup.after_install"
+after_migrate = "frappe_telegram_integration.setup.after_migrate"
 
-# Each item in the list will be shown as an app in the apps page
-# add_to_apps_screen = [
-# 	{
-# 		"name": "frappe_telegram_integration",
-# 		"logo": "/assets/frappe_telegram_integration/logo.png",
-# 		"title": "Frappe Telegram Integration",
-# 		"route": "/frappe_telegram_integration",
-# 		"has_permission": "frappe_telegram_integration.api.permission.has_app_permission"
-# 	}
-# ]
+override_doctype_class = {
+    "Notification": "frappe_telegram_integration.override_doctype_class.TelegramNotification"
+}
+
+fixtures = [
+    {
+        "dt": "Role",
+        "filters": [["name", "in", ["Telegram Bot Manager", "Telegram Bot User"]]]
+    },
+    {
+        "dt": "Custom Field",
+        "filters": [["app_name", "=", "frappe_telegram_integration"]]
+    },
+]
+
+telegram_bot_handler = [
+    "frappe_telegram_integration.handlers.start.setup",
+    "frappe_telegram_integration.handlers.auth.setup",
+]
+
+telegram_update_pre_processors = [
+    "frappe_telegram_integration.handlers.logging.handler",
+]
 
 # Includes in <head>
 # ------------------
@@ -48,11 +64,6 @@ app_license = "mit"
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
 
-# Svg Icons
-# ------------------
-# include app icons in desk
-# app_include_icons = "frappe_telegram_integration/public/icons.svg"
-
 # Home Pages
 # ----------
 
@@ -61,7 +72,7 @@ app_license = "mit"
 
 # website user home page (by Role)
 # role_home_page = {
-# 	"Role": "home_page"
+#    "Role": "home_page"
 # }
 
 # Generators
@@ -70,42 +81,11 @@ app_license = "mit"
 # automatically create page for each record of this doctype
 # website_generators = ["Web Page"]
 
-# Jinja
-# ----------
-
-# add methods and filters to jinja environment
-# jinja = {
-# 	"methods": "frappe_telegram_integration.utils.jinja_methods",
-# 	"filters": "frappe_telegram_integration.utils.jinja_filters"
-# }
-
 # Installation
 # ------------
 
 # before_install = "frappe_telegram_integration.install.before_install"
 # after_install = "frappe_telegram_integration.install.after_install"
-
-# Uninstallation
-# ------------
-
-# before_uninstall = "frappe_telegram_integration.uninstall.before_uninstall"
-# after_uninstall = "frappe_telegram_integration.uninstall.after_uninstall"
-
-# Integration Setup
-# ------------------
-# To set up dependencies/integrations with other apps
-# Name of the app being installed is passed as an argument
-
-# before_app_install = "frappe_telegram_integration.utils.before_app_install"
-# after_app_install = "frappe_telegram_integration.utils.after_app_install"
-
-# Integration Cleanup
-# -------------------
-# To clean up dependencies/integrations with other apps
-# Name of the app being uninstalled is passed as an argument
-
-# before_app_uninstall = "frappe_telegram_integration.utils.before_app_uninstall"
-# after_app_uninstall = "frappe_telegram_integration.utils.after_app_uninstall"
 
 # Desk Notifications
 # ------------------
@@ -118,11 +98,11 @@ app_license = "mit"
 # Permissions evaluated in scripted ways
 
 # permission_query_conditions = {
-# 	"Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
+#     "Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
 # }
 #
 # has_permission = {
-# 	"Event": "frappe.desk.doctype.event.event.has_permission",
+#     "Event": "frappe.desk.doctype.event.event.has_permission",
 # }
 
 # DocType Class
@@ -130,7 +110,7 @@ app_license = "mit"
 # Override standard doctype classes
 
 # override_doctype_class = {
-# 	"ToDo": "custom_app.overrides.CustomToDo"
+#     "ToDo": "custom_app.overrides.CustomToDo"
 # }
 
 # Document Events
@@ -138,32 +118,32 @@ app_license = "mit"
 # Hook on document methods and events
 
 # doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
+#     "*": {
+#         "on_update": "method",
+#         "on_cancel": "method",
+#         "on_trash": "method"
+#    }
 # }
 
 # Scheduled Tasks
 # ---------------
 
 # scheduler_events = {
-# 	"all": [
-# 		"frappe_telegram_integration.tasks.all"
-# 	],
-# 	"daily": [
-# 		"frappe_telegram_integration.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"frappe_telegram_integration.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"frappe_telegram_integration.tasks.weekly"
-# 	],
-# 	"monthly": [
-# 		"frappe_telegram_integration.tasks.monthly"
-# 	],
+#     "all": [
+#         "frappe_telegram_integration.tasks.all"
+#     ],
+#     "daily": [
+#         "frappe_telegram_integration.tasks.daily"
+#     ],
+#     "hourly": [
+#         "frappe_telegram_integration.tasks.hourly"
+#     ],
+#     "weekly": [
+#         "frappe_telegram_integration.tasks.weekly"
+#     ]
+#     "monthly": [
+#         "frappe_telegram_integration.tasks.monthly"
+#     ]
 # }
 
 # Testing
@@ -175,70 +155,26 @@ app_license = "mit"
 # ------------------------------
 #
 # override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "frappe_telegram_integration.event.get_events"
+#     "frappe.desk.doctype.event.event.get_events": "frappe_telegram_integration.event.get_events"
 # }
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
 # along with any modifications made in other Frappe apps
 # override_doctype_dashboards = {
-# 	"Task": "frappe_telegram_integration.task.get_dashboard_data"
+#     "Task": "frappe_telegram_integration.task.get_dashboard_data"
 # }
 
 # exempt linked doctypes from being automatically cancelled
 #
 # auto_cancel_exempted_doctypes = ["Auto Repeat"]
 
-# Ignore links to specified DocTypes when deleting documents
-# -----------------------------------------------------------
-
-# ignore_links_on_delete = ["Communication", "ToDo"]
-
-# Request Events
-# ----------------
-# before_request = ["frappe_telegram_integration.utils.before_request"]
-# after_request = ["frappe_telegram_integration.utils.after_request"]
-
-# Job Events
-# ----------
-# before_job = ["frappe_telegram_integration.utils.before_job"]
-# after_job = ["frappe_telegram_integration.utils.after_job"]
 
 # User Data Protection
-# --------------------
-
-# user_data_fields = [
-# 	{
-# 		"doctype": "{doctype_1}",
-# 		"filter_by": "{filter_by}",
-# 		"redact_fields": ["{field_1}", "{field_2}"],
-# 		"partial": 1,
-# 	},
-# 	{
-# 		"doctype": "{doctype_2}",
-# 		"filter_by": "{filter_by}",
-# 		"partial": 1,
-# 	},
-# 	{
-# 		"doctype": "{doctype_3}",
-# 		"strict": False,
-# 	},
-# 	{
-# 		"doctype": "{doctype_4}"
-# 	}
-# ]
 
 # Authentication and authorization
 # --------------------------------
 
 # auth_hooks = [
-# 	"frappe_telegram_integration.auth.validate"
+#     "frappe_telegram_integration.auth.validate"
 # ]
-
-# Automatically update python controller files with type annotations for this app.
-# export_python_type_annotations = True
-
-# default_log_clearing_doctypes = {
-# 	"Logging DocType Name": 30  # days to retain logs
-# }
-
